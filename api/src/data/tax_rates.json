@@ -1,0 +1,8 @@
+{
+  "IT": {"capital_gains": 0.26, "withholding_dividends": 0.26},
+  "IL": {"capital_gains": 0.25, "withholding_dividends": 0.25},
+  "US": {"capital_gains": 0.15, "withholding_dividends": 0.15},
+  "GB": {"capital_gains": 0.20, "withholding_dividends": 0.20},
+  "DE": {"capital_gains": 0.26375, "withholding_dividends": 0.26375},
+  "FR": {"capital_gains": 0.30, "withholding_dividends": 0.30}
+}
