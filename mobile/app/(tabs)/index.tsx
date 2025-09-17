@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-
-const API = "http://192.168.253.12:8080"; // <-- tuo IP
+import { ping } from "../../src/api/client";
 
 export default function HomeScreen() {
-  const [status, setStatus] = useState<"loading"|"ok"|"err">("loading");
+  const [state, setState] = useState<"loading"|"ok"|"err">("loading");
   const [msg, setMsg] = useState("Connecting…");
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API}/ping`);
-        const data = await res.json();
+        const data = await ping();
         setMsg(data?.message ?? "no message");
-        setStatus("ok");
+        setState("ok");
       } catch (e: any) {
         setMsg(e?.message ?? "error");
-        setStatus("err");
+        setState("err");
       }
     })();
   }, []);
@@ -28,14 +26,14 @@ export default function HomeScreen() {
 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Backend check</Text>
-        {status === "loading" && (
+        {state === "loading" && (
           <View style={styles.row}>
             <ActivityIndicator />
-            <Text style={styles.text}> contacting {API}/ping…</Text>
+            <Text style={styles.text}> contacting /ping…</Text>
           </View>
         )}
-        {status === "ok" && <Text style={styles.ok}>✅ {msg}</Text>}
-        {status === "err" && <Text style={styles.err}>❌ {msg}</Text>}
+        {state === "ok" && <Text style={styles.ok}>✅ {msg}</Text>}
+        {state === "err" && <Text style={styles.err}>❌ {msg}</Text>}
       </View>
     </View>
   );
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
   container: { flex:1, backgroundColor:"#0A84FF", alignItems:"center", justifyContent:"center", padding:24 },
   title: { fontSize:32, fontWeight:"800", color:"#fff" },
   subtitle: { fontSize:16, color:"#E8F0FF", marginBottom:24 },
-  card: { width:"100%", backgroundColor:"#fff", borderRadius:16, padding:16, shadowOpacity:0.15, shadowRadius:10 },
+  card: { width:"100%", backgroundColor:"#fff", borderRadius:16, padding:16, shadowOpacity:0.15, shadowRadius:10, marginTop:16 },
   cardTitle: { fontWeight:"700", fontSize:16, marginBottom:8 },
   row: { flexDirection:"row", alignItems:"center" },
   text: { fontSize:14 },
